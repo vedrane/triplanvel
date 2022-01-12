@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Triplanvel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Asap&amp;display=swap" rel="stylesheet">
+    <style>body {
+  font-family: 'Asap', sans-serif;
+  text-align: center;
+  background-color: #ffffff;
+  opacity: 1;
+  background-image:  radial-gradient(#ccdcea 0.5px, transparent 0.5px), radial-gradient(#ccdcea 0.5px, #ffffff 0.5px);
+  background-size: 20px 20px;
+  background-position: 0 0,10px 10px;
+}
+
+h1 {
+  color: #959595;
+}
+
+.form, .entry {
+  background-color: #fcfcfc;
+  border: none;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+img {
+  width: 40%
+}
+@media only screen and (max-width: 600px) {
+  img {
+    width: 100%;
+  }
+}
+
+.button {
+  background-color: #98d9c6;
+  border: none;
+  font-family: 'Asap', sans-serif;
+  padding: 10px 20px;
+  color: #ffffff;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 12px;
+  font-size: 17px;
+}</style>
+  </head>
+  <body>
+    <h1>triplanvel</h1>
+    <div id="form" class="form">
+      <button class="button" onClick="return deleteAll();">Delete All Entries</button><br>
+      <h3>New Entry</h3>
+      <span>Trip Name: </span><input id="name"></input><br><br>
+      <span>Start Location: </span><input id="start"></input><br><br>
+      <span>Extra Locations: </span><input id="extra"></input><br><br>
+      <span>End Location: </span><input id="end"></input><br><br>
+      <span>Start Date: </span><input type="date" id="dStart"></input><br><br>
+      <span>End Date: </span><input type="date" id="dEnd"></input><br><br>
+      <span>Theme: <select id="theme"><option value="beach">Beach</option><option value="snow">Snow</option><option value="woods">Woods</option><option value="business">Business/Casual</option><option value="themepark">Theme Park</option><option value="cruise">Cruise</option><option value="roadtrip">Road Trip</option><option value="tourism">Tourism/Culture</option>
+  </select></span><br><br>
+      <button class="button" onClick="return newEntry();">+ Create</button>
+    </div>
+    <br>
+    <span>Photos by <a href="https://www.pexels.com/@pixabay">Pixabay</a>, <a href="https://www.pexels.com/@iamtrangdoan">Trang Doan</a>, <a href="https://www.pexels.com/@edwin-soto-966177">Edwin Soto</a>, <a href="https://www.pexels.com/@jakkel">Rudolf Jakkel</a>, <a href="https://www.pexels.com/@cato">Kemal Christian Catovic</a>, <a href="https://www.pexels.com/@arthousestudio">ArtHouse Studio</a>, and <a href="https://www.pexels.com/@minan1398">Min An</a> (from Pexels) <br>Made by <a href="https://vedrane.com">Ved Rane</a></span>
+    <script>
+      let data = JSON.parse(localStorage.getItem('entries')) || [];
+data.forEach(entry => {
+  addEntry(entry);
+})
+
+function newEntry(){
+   let entry = {
+    name: document.getElementById("name").value,
+    start: document.getElementById("start").value,
+    dStart: document.getElementById("dStart").value,
+    end: document.getElementById("end").value,
+    dEnd: document.getElementById("dEnd").value,
+    extra: document.getElementById("extra").value,
+    theme: document.getElementById("theme").value
+   }
+   addEntry(entry);
+   data.push(entry);
+   localStorage.setItem("entries", JSON.stringify(data))
+}
+
+function addEntry(obj) {
+  let extra = obj.extra;
+  if(obj.extra.replace(/\s/g,'') == ""){
+    extra = "nothing"
+  }
+  let html = `<div class="entry"><img src="${obj.theme}.jpg"><h2>${obj.name}</h2><p>A trip from ${obj.start} to ${obj.end} from ${obj.dStart} to ${obj.dEnd}, with ${extra} as stopovers.</p></div><br>`
+  let div = document.createElement("div");
+  div.innerHTML = html;
+  document.body.insertBefore(div, document.getElementById("form"))
+}
+
+function deleteAll(){
+  localStorage.setItem("entries", "")
+  location.reload(false);
+}
+    </script>
+  </body>
+</html>
